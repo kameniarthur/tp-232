@@ -13,7 +13,7 @@ import os
 # ─── Configuration de la page ───────────────────────────────────────────────
 st.set_page_config(
     page_title="AgriData Analytics",
-    page_icon="🌾",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -264,18 +264,18 @@ GREEN_PALETTE = ["#4ade80", "#86efac", "#166534", "#22c55e", "#15803d",
 with st.sidebar:
     st.markdown("""
     <div style="text-align:center; padding: 0 0 1.5rem;">
-      <div style="font-size:3rem;">🌾</div>
+      <div style="font-size:3rem;"></div>
       <div style="font-family:'Space Mono',monospace; color:#4ade80; font-size:1.1rem; font-weight:700;">AgriData</div>
       <div style="color:#6b7280; font-size:0.78rem; margin-top:4px;">Analytics • Cameroun</div>
     </div>
     """, unsafe_allow_html=True)
 
     nav = st.radio("Navigation", [
-        "📝 Saisie des données",
-        "📊 Tableau de bord",
-        "📈 Analyses statistiques",
-        "🗺️ Analyse spatiale",
-        "📤 Export & Import",
+        " Saisie des données",
+        " Tableau de bord",
+        " Analyses statistiques",
+        " Analyse spatiale",
+        " Export & Import",
     ], label_visibility="collapsed")
 
     st.divider()
@@ -290,20 +290,20 @@ with st.sidebar:
 
     if n > 0:
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("🗑️ Vider toutes les données", use_container_width=True):
+        if st.button(" Vider toutes les données", use_container_width=True):
             st.session_state.records = []
             st.rerun()
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # PAGE 1 — SAISIE DES DONNÉES
 # ═══════════════════════════════════════════════════════════════════════════════
-if nav == "📝 Saisie des données":
-    st.markdown("# 🌱 Saisie des données agricoles")
+if nav == " Saisie des données":
+    st.markdown("#  Saisie des données agricoles")
     st.markdown("<p style='color:#6b7280; margin-top:-0.5rem;'>Renseignez les informations de votre parcelle / campagne agricole</p>", unsafe_allow_html=True)
 
     with st.form("saisie_form", clear_on_submit=True):
         # ── Identification ──
-        section("🪪", "Identification")
+        section("", "Identification")
         c1, c2, c3 = st.columns(3)
         with c1:
             nom_agriculteur = st.text_input("Nom de l'agriculteur", placeholder="Ex : Jean Mbarga")
@@ -313,7 +313,7 @@ if nav == "📝 Saisie des données":
             localite = st.text_input("Localité / Village", placeholder="Ex : Obala")
 
         # ── Parcelle ──
-        section("🌍", "Informations sur la parcelle")
+        section("", "Informations sur la parcelle")
         c1, c2, c3, c4 = st.columns(4)
         with c1:
             culture = st.selectbox("Culture principale", CULTURES)
@@ -331,7 +331,7 @@ if nav == "📝 Saisie des données":
             date_semis = st.date_input("Date de semis", value=date.today())
 
         # ── Production ──
-        section("🌽", "Données de production")
+        section("", "Données de production")
         c1, c2, c3, c4 = st.columns(4)
         with c1:
             rendement = st.number_input("Rendement (kg/ha)", min_value=0.0, max_value=50000.0, value=1000.0, step=50.0)
@@ -343,7 +343,7 @@ if nav == "📝 Saisie des données":
             prix_vente = st.number_input("Prix de vente moyen (FCFA/kg)", min_value=0.0, value=300.0, step=10.0)
 
         # ── Intrants ──
-        section("🧪", "Intrants et ressources")
+        section("", "Intrants et ressources")
         c1, c2, c3 = st.columns(3)
         with c1:
             engrais = st.number_input("Engrais utilisé (kg)", min_value=0.0, value=0.0, step=5.0)
@@ -356,11 +356,11 @@ if nav == "📝 Saisie des données":
             temperature_moy = st.number_input("Température moyenne (°C)", min_value=0.0, max_value=50.0, value=25.0, step=0.5)
 
         # ── Notes ──
-        section("📝", "Observations")
+        section("", "Observations")
         notes = st.text_area("Remarques / Observations", placeholder="Conditions particulières, maladies observées, qualité de récolte...", height=80)
 
         st.markdown("<br>", unsafe_allow_html=True)
-        submitted = st.form_submit_button("✅ Enregistrer la donnée", use_container_width=True)
+        submitted = st.form_submit_button(" Enregistrer la donnée", use_container_width=True)
 
         if submitted:
             prod = production_totale if production_totale > 0 else rendement * superficie
@@ -392,13 +392,13 @@ if nav == "📝 Saisie des données":
                 "Enregistré_le": datetime.now().strftime("%Y-%m-%d %H:%M"),
             }
             st.session_state.records.append(record)
-            st.success(f"✅ Donnée pour **{culture}** ({region}) enregistrée avec succès !")
+            st.success(f" Donnée pour **{culture}** ({region}) enregistrée avec succès !")
             st.balloons()
 
     # Aperçu rapide
     if st.session_state.records:
         st.divider()
-        section("👁️", "Dernières entrées")
+        section("", "Dernières entrées")
         df_preview = pd.DataFrame(st.session_state.records[-5:][::-1])
         cols_show = ["Agriculteur", "Culture", "Région", "Superficie_ha", "Rendement_kg_ha", "Marge_FCFA", "Enregistré_le"]
         st.dataframe(df_preview[cols_show], use_container_width=True, hide_index=True)
@@ -406,14 +406,14 @@ if nav == "📝 Saisie des données":
 # ═══════════════════════════════════════════════════════════════════════════════
 # PAGE 2 — TABLEAU DE BORD
 # ═══════════════════════════════════════════════════════════════════════════════
-elif nav == "📊 Tableau de bord":
-    st.markdown("# 📊 Tableau de bord")
+elif nav == " Tableau de bord":
+    st.markdown("#  Tableau de bord")
 
     df = get_df()
     if df.empty:
         st.markdown("""
         <div class="empty-state">
-          <div class="icon">🌾</div>
+          <div class="icon"></div>
           <p style="color:#4b5563; font-size:1.1rem;">Aucune donnée disponible</p>
           <p style="color:#374151; font-size:0.85rem;">Commencez par saisir des données agricoles dans l'onglet <strong>Saisie</strong>.</p>
         </div>""", unsafe_allow_html=True)
@@ -432,7 +432,7 @@ elif nav == "📊 Tableau de bord":
         st.stop()
 
     # KPIs
-    section("📌", "Indicateurs clés")
+    section("", "Indicateurs clés")
     c1, c2, c3, c4, c5 = st.columns(5)
     with c1: kpi(len(dff), "Enregistrements")
     with c2: kpi(f"{dff['Superficie_ha'].sum():.1f}", "Hectares totaux")
@@ -445,7 +445,7 @@ elif nav == "📊 Tableau de bord":
     # Charts row 1
     c1, c2 = st.columns(2)
     with c1:
-        section("🌽", "Répartition par culture")
+        section("", "Répartition par culture")
         cult_count = dff["Culture"].value_counts().reset_index()
         cult_count.columns = ["Culture", "Nb"]
         fig = px.pie(cult_count, values="Nb", names="Culture",
@@ -456,7 +456,7 @@ elif nav == "📊 Tableau de bord":
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
-        section("📍", "Superficie par région")
+        section("", "Superficie par région")
         reg_surf = dff.groupby("Région")["Superficie_ha"].sum().reset_index().sort_values("Superficie_ha", ascending=True)
         fig = px.bar(reg_surf, x="Superficie_ha", y="Région", orientation="h",
                      color="Superficie_ha", color_continuous_scale=["#052e16", "#4ade80"],
@@ -469,7 +469,7 @@ elif nav == "📊 Tableau de bord":
     # Charts row 2
     c1, c2 = st.columns(2)
     with c1:
-        section("💰", "Rendement moyen par culture")
+        section("", "Rendement moyen par culture")
         rend_cult = dff.groupby("Culture")["Rendement_kg_ha"].mean().reset_index().sort_values("Rendement_kg_ha", ascending=False)
         fig = px.bar(rend_cult, x="Culture", y="Rendement_kg_ha",
                      color="Rendement_kg_ha", color_continuous_scale=["#052e16", "#4ade80"],
@@ -480,7 +480,7 @@ elif nav == "📊 Tableau de bord":
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
-        section("📈", "Marge vs Coût de production")
+        section("", "Marge vs Coût de production")
         fig = px.scatter(dff, x="Coût_FCFA", y="Marge_FCFA",
                          color="Culture", size="Superficie_ha",
                          hover_data=["Agriculteur", "Région"],
@@ -490,7 +490,7 @@ elif nav == "📊 Tableau de bord":
         st.plotly_chart(fig, use_container_width=True)
 
     # Tableau complet
-    section("📋", "Données complètes")
+    section("", "Données complètes")
     st.dataframe(dff, use_container_width=True, hide_index=True,
                  column_config={
                      "Marge_FCFA": st.column_config.NumberColumn("Marge (FCFA)", format="%,.0f"),
@@ -501,22 +501,22 @@ elif nav == "📊 Tableau de bord":
 # ═══════════════════════════════════════════════════════════════════════════════
 # PAGE 3 — ANALYSES STATISTIQUES
 # ═══════════════════════════════════════════════════════════════════════════════
-elif nav == "📈 Analyses statistiques":
-    st.markdown("# 📈 Analyses statistiques descriptives")
+elif nav == " Analyses statistiques":
+    st.markdown("#  Analyses statistiques descriptives")
 
     df = get_df()
     if df.empty:
-        st.markdown('<div class="empty-state"><div class="icon">📊</div><p>Aucune donnée à analyser.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="empty-state"><div class="icon"></div><p>Aucune donnée à analyser.</p></div>', unsafe_allow_html=True)
         st.stop()
 
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Distributions", "🔗 Corrélations", "📦 Box Plots", "📐 Stats détaillées"])
+    tab1, tab2, tab3, tab4 = st.tabs([" Distributions", " Corrélations", " Box Plots", " Stats détaillées"])
 
     num_cols = ["Superficie_ha", "Rendement_kg_ha", "Production_kg",
                 "Coût_FCFA", "Marge_FCFA", "Engrais_kg", "Pluviometrie_mm", "Temperature_moy_C"]
     num_cols = [c for c in num_cols if c in df.columns]
 
     with tab1:
-        section("📊", "Distribution des variables clés")
+        section("", "Distribution des variables clés")
         col_sel = st.selectbox("Variable à analyser", num_cols,
                                format_func=lambda x: x.replace("_", " "))
         group_by = st.selectbox("Grouper par", ["Aucun", "Culture", "Région", "Type_sol", "Saison"])
@@ -545,7 +545,7 @@ elif nav == "📈 Analyses statistiques":
         with c6: kpi(f"{vals.skew():.2f}", "Asymétrie")
 
     with tab2:
-        section("🔗", "Matrice de corrélation")
+        section("", "Matrice de corrélation")
         df_num = df[num_cols].dropna()
         if len(df_num) >= 2:
             corr = df_num.corr()
@@ -557,7 +557,7 @@ elif nav == "📈 Analyses statistiques":
             st.plotly_chart(fig, use_container_width=True)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            section("📌", "Nuage de points croisé")
+            section("", "Nuage de points croisé")
             c1, c2 = st.columns(2)
             with c1: x_ax = st.selectbox("Axe X", num_cols, index=0)
             with c2: y_ax = st.selectbox("Axe Y", num_cols, index=1)
@@ -570,7 +570,7 @@ elif nav == "📈 Analyses statistiques":
             st.info("Il faut au moins 2 enregistrements pour calculer les corrélations.")
 
     with tab3:
-        section("📦", "Boîtes à moustaches")
+        section("", "Boîtes à moustaches")
         y_var = st.selectbox("Variable", num_cols, format_func=lambda x: x.replace("_", " "))
         x_var = st.selectbox("Catégorie (X)", ["Culture", "Région", "Type_sol", "Saison", "Irrigation"])
 
@@ -582,7 +582,7 @@ elif nav == "📈 Analyses statistiques":
         st.plotly_chart(fig, use_container_width=True)
 
         # Violin
-        section("🎻", "Graphe en violon")
+        section("", "Graphe en violon")
         fig2 = px.violin(df, x=x_var, y=y_var, color=x_var,
                          color_discrete_sequence=GREEN_PALETTE,
                          box=True, points="outliers")
@@ -591,7 +591,7 @@ elif nav == "📈 Analyses statistiques":
         st.plotly_chart(fig2, use_container_width=True)
 
     with tab4:
-        section("📐", "Statistiques descriptives complètes")
+        section("", "Statistiques descriptives complètes")
         stats = df[num_cols].describe().T
         stats["variance"] = df[num_cols].var()
         stats["skewness"] = df[num_cols].skew()
@@ -600,7 +600,7 @@ elif nav == "📈 Analyses statistiques":
         stats.index = [i.replace("_", " ") for i in stats.index]
         st.dataframe(stats, use_container_width=True)
 
-        section("🥧", "Analyse par groupe")
+        section("", "Analyse par groupe")
         group_col = st.selectbox("Grouper par", ["Culture", "Région", "Type_sol", "Saison"])
         agg_col = st.selectbox("Agréger", num_cols, format_func=lambda x: x.replace("_", " "))
         agg_func = st.radio("Fonction", ["mean", "sum", "median", "std"], horizontal=True)
@@ -623,12 +623,12 @@ elif nav == "📈 Analyses statistiques":
 # ═══════════════════════════════════════════════════════════════════════════════
 # PAGE 4 — ANALYSE SPATIALE
 # ═══════════════════════════════════════════════════════════════════════════════
-elif nav == "🗺️ Analyse spatiale":
-    st.markdown("# 🗺️ Analyse par région")
+elif nav == " Analyse spatiale":
+    st.markdown("#  Analyse par région")
 
     df = get_df()
     if df.empty:
-        st.markdown('<div class="empty-state"><div class="icon">🗺️</div><p>Aucune donnée disponible.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="empty-state"><div class="icon"></div><p>Aucune donnée disponible.</p></div>', unsafe_allow_html=True)
         st.stop()
 
     # Agrégation par région
@@ -643,7 +643,7 @@ elif nav == "🗺️ Analyse spatiale":
     reg_df = df.groupby("Région").agg(agg_dict).reset_index()
     reg_df["Nb_agriculteurs"] = df.groupby("Région").size().values
 
-    section("📊", "Performance par région")
+    section("", "Performance par région")
     metric = st.selectbox("Indicateur", num_cols + ["Nb_agriculteurs"],
                           format_func=lambda x: x.replace("_", " "))
 
@@ -656,7 +656,7 @@ elif nav == "🗺️ Analyse spatiale":
     st.plotly_chart(fig, use_container_width=True)
 
     # Radar chart
-    section("🕸️", "Profil radar multi-régions")
+    section("", "Profil radar multi-régions")
     radar_metrics = [c for c in ["Rendement_kg_ha", "Superficie_ha", "Marge_FCFA", "Engrais_kg"] if c in reg_df.columns]
 
     if len(radar_metrics) >= 3:
@@ -696,7 +696,7 @@ elif nav == "🗺️ Analyse spatiale":
             st.plotly_chart(fig, use_container_width=True)
 
     # Distribution cultures par région
-    section("🌽", "Cultures par région")
+    section("", "Cultures par région")
     cult_reg = df.groupby(["Région", "Culture"]).size().reset_index(name="Nb")
     fig = px.bar(cult_reg, x="Région", y="Nb", color="Culture",
                  color_discrete_sequence=GREEN_PALETTE, barmode="stack")
@@ -705,7 +705,7 @@ elif nav == "🗺️ Analyse spatiale":
     st.plotly_chart(fig, use_container_width=True)
 
     # Table régions
-    section("📋", "Tableau récapitulatif par région")
+    section("", "Tableau récapitulatif par région")
     display_df = reg_df.copy()
     display_df.columns = [c.replace("_", " ") for c in display_df.columns]
     st.dataframe(display_df.round(2), use_container_width=True, hide_index=True)
@@ -713,27 +713,27 @@ elif nav == "🗺️ Analyse spatiale":
 # ═══════════════════════════════════════════════════════════════════════════════
 # PAGE 5 — EXPORT & IMPORT
 # ═══════════════════════════════════════════════════════════════════════════════
-elif nav == "📤 Export & Import":
-    st.markdown("# 📤 Export & Import des données")
+elif nav == " Export & Import":
+    st.markdown("#  Export & Import des données")
 
-    tab_exp, tab_imp, tab_gen = st.tabs(["⬇️ Exporter", "⬆️ Importer", "🎲 Générer des données test"])
+    tab_exp, tab_imp, tab_gen = st.tabs([" Exporter", " Importer", " Générer des données test"])
 
     with tab_exp:
         df = get_df()
         if df.empty:
-            st.markdown('<div class="empty-state"><div class="icon">📂</div><p>Aucune donnée à exporter.</p></div>', unsafe_allow_html=True)
+            st.markdown('<div class="empty-state"><div class="icon"></div><p>Aucune donnée à exporter.</p></div>', unsafe_allow_html=True)
         else:
-            section("⬇️", "Télécharger les données")
+            section("", "Télécharger les données")
             c1, c2, c3 = st.columns(3)
 
             with c1:
                 csv_data = df.to_csv(index=False, sep=";", encoding="utf-8-sig")
-                st.download_button("📄 Télécharger CSV", data=csv_data,
+                st.download_button(" Télécharger CSV", data=csv_data,
                                    file_name=f"agridata_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
                                    mime="text/csv", use_container_width=True)
             with c2:
                 json_data = json.dumps(st.session_state.records, ensure_ascii=False, indent=2)
-                st.download_button("📋 Télécharger JSON", data=json_data,
+                st.download_button(" Télécharger JSON", data=json_data,
                                    file_name=f"agridata_{datetime.now().strftime('%Y%m%d_%H%M')}.json",
                                    mime="application/json", use_container_width=True)
             with c3:
@@ -741,16 +741,16 @@ elif nav == "📤 Export & Import":
                 with pd.ExcelWriter(buf, engine="openpyxl") as writer:
                     df.to_excel(writer, index=False, sheet_name="Données agricoles")
                 buf.seek(0)
-                st.download_button("📊 Télécharger Excel", data=buf,
+                st.download_button(" Télécharger Excel", data=buf,
                                    file_name=f"agridata_{datetime.now().strftime('%Y%m%d_%H%M')}.xlsx",
                                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                    use_container_width=True)
 
-            section("👁️", "Aperçu complet")
+            section("", "Aperçu complet")
             st.dataframe(df, use_container_width=True, hide_index=True)
 
     with tab_imp:
-        section("⬆️", "Importer des données")
+        section("", "Importer des données")
         st.markdown("<p style='color:#9ca3af;'>Importez un fichier CSV ou JSON précédemment exporté depuis AgriData.</p>", unsafe_allow_html=True)
 
         uploaded = st.file_uploader("Choisir un fichier", type=["csv", "json"])
@@ -762,18 +762,18 @@ elif nav == "📤 Export & Import":
                     data = json.load(uploaded)
                     df_imp = pd.DataFrame(data)
 
-                st.success(f"✅ {len(df_imp)} enregistrement(s) détecté(s)")
+                st.success(f" {len(df_imp)} enregistrement(s) détecté(s)")
                 st.dataframe(df_imp.head(10), use_container_width=True, hide_index=True)
 
                 c1, c2 = st.columns(2)
                 with c1:
-                    if st.button("➕ Ajouter aux données existantes", use_container_width=True):
+                    if st.button(" Ajouter aux données existantes", use_container_width=True):
                         for _, row in df_imp.iterrows():
                             st.session_state.records.append(row.to_dict())
                         st.success("Données ajoutées !")
                         st.rerun()
                 with c2:
-                    if st.button("🔄 Remplacer toutes les données", use_container_width=True):
+                    if st.button(" Remplacer toutes les données", use_container_width=True):
                         st.session_state.records = df_imp.to_dict("records")
                         st.success("Données remplacées !")
                         st.rerun()
@@ -781,11 +781,11 @@ elif nav == "📤 Export & Import":
                 st.error(f"Erreur lors de l'import : {e}")
 
     with tab_gen:
-        section("🎲", "Générer des données de démonstration")
+        section("", "Générer des données de démonstration")
         st.markdown("<p style='color:#9ca3af;'>Générez des données fictives réalistes pour tester l'application.</p>", unsafe_allow_html=True)
 
         n_gen = st.slider("Nombre d'enregistrements à générer", 10, 200, 50)
-        if st.button("🚀 Générer les données", use_container_width=True):
+        if st.button(" Générer les données", use_container_width=True):
             np.random.seed(42)
             records_gen = []
             noms = ["Mbarga", "Nkoa", "Eto'o", "Biya", "Fon", "Nana", "Kamga", "Fouda", "Nlend", "Abega"]
@@ -826,5 +826,5 @@ elif nav == "📤 Export & Import":
                     "Enregistré_le": datetime.now().strftime("%Y-%m-%d %H:%M"),
                 })
             st.session_state.records.extend(records_gen)
-            st.success(f"✅ {n_gen} enregistrements générés avec succès !")
+            st.success(f" {n_gen} enregistrements générés avec succès !")
             st.rerun()
